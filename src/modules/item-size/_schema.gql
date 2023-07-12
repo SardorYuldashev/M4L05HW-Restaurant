@@ -16,7 +16,7 @@ type Query {
 type Mutation {
   createItemSize(input: CreateItemSizeInput!): ItemSize!
   updateItemSize(id: ID!, input: UpdateItemSizeInput!): ItemSize!
-  # removeItemSize(id: ID!): ItemSize!
+  removeItemSize(id: ID!): ItemSize!
 }
 
 type Subscription {
