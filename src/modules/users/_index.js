@@ -41,7 +41,7 @@ const resolvers = {
     updateUser: (_, args, contextValue) => {
       isLoggedIn(contextValue);
 
-      if (contextValue.user.id !== +args.id) {
+      if (contextValue.user.role !== "user" || contextValue.user.id !== +args.id) {
         throw new ForbiddedError("Faqat o'z profilingizni tahrirlay olasiz");
       };
 
@@ -51,14 +51,14 @@ const resolvers = {
     removeUser: (_, args, contextValue) => {
       isLoggedIn(contextValue);
 
-      if (contextValue.user.id !== +args.id) {
+      if (contextValue.user.role !== "user" || contextValue.user.id !== +args.id) {
         throw new ForbiddedError("Birovni profilini o'chira olmaysiz");
       };
 
       return removeUser({ id: args.id });
     },
 
-    login: (_, args) => {
+    loginUser: (_, args) => {
       return loginUser(args.input);
     },
   },

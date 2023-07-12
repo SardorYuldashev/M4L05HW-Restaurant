@@ -7,7 +7,7 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   updateUser(id: ID!, input: UpdateUserInput!): User!
   removeUser(id: ID!): User!
-  login(input: LoginInput!): Login!
+  loginUser(input: loginUserInput!): Login!
 }
 
 type Subscription {
@@ -41,7 +41,7 @@ input UpdateUserInput {
   password: String
 }
 
-input LoginInput {
+input loginUserInput {
   username: String!
   password: String!
 }

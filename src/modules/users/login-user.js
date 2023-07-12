@@ -16,7 +16,7 @@ export const loginUser = async ({ username, password }) => {
     throw new UnauthorizedError('Username yoki password xato');
   };
 
-  const payload = { user: { id: existing.id } };
+  const payload = { user: { id: existing.id, role: "user" } };
   const token = jwt.sign(payload, config.jwt.secret, { expiresIn: '5h' });
 
   return { token };
