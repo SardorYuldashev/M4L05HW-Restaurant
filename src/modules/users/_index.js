@@ -41,7 +41,7 @@ const resolvers = {
     updateUser: (_, args, contextValue) => {
       isLoggedIn(contextValue);
 
-      if (contextValue.user.id !== args.id) {
+      if (contextValue.user.id !== +args.id) {
         throw new ForbiddedError("Faqat o'z profilingizni tahrirlay olasiz");
       };
 
