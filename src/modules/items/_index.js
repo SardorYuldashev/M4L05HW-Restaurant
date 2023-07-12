@@ -8,6 +8,7 @@ import { showItem } from './show-item.js';
 import { addItem } from './add-item.js';
 import { editItem } from './edit-item.js';
 import { removeItem } from './remove-item.js';
+import { listItemSizes } from './../item-size/list-item-size.js';
 
 const typeDefs = readFileSync(
   join(process.cwd(), 'src', 'modules', 'items', '_schema.gql'),
@@ -65,6 +66,11 @@ const resolvers = {
       subscribe: () => pubsub.asyncIterator(['ITEM_CREATED']),
     },
   },
+  Item: {
+    sizes: (parent) => {
+      return listItemSizes({ item_id: parent.id });
+    }
+  }
 };
 
 export default { typeDefs, resolvers };
