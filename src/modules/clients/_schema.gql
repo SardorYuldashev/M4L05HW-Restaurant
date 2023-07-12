@@ -3,11 +3,35 @@ type Query {
   client(id: ID!): Client!
 }
 
+type Mutation {
+  createClient(input: CreateClientInput!): Client!
+  updateClient(id: ID!, input: UpdateClientInput!): Client!
+  removeClient(id: ID!): Client!
+}
+
+type Subscription {
+  clientCreated: Client!
+}
+
 type Client {
   id: ID!
-	phone_number: Int!
+	phone_number: Float!
 	first_name: String
 	last_name: String
 	created_at: String
 	updated_at: String
+}
+
+input CreateClientInput {
+  first_name: String!
+  last_name: String!
+  phone_number: Float!
+  password: String!
+}
+
+input UpdateClientInput {
+  first_name: String
+  last_name: String
+  phone_number: Float
+  password: String
 }
