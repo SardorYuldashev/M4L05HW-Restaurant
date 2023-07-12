@@ -1,6 +1,6 @@
 type ItemSize {
 	id: ID!
-	# item: Item!
+	item: Item!
 	price: Float
 	size: String
 	photo: String
@@ -11,4 +11,21 @@ type ItemSize {
 type Query {
   item_sizes: [ItemSize!]!
   item_size(id: ID!): ItemSize!
+}
+
+type Mutation {
+  createItemSize(input: CreateItemSizeInput!): ItemSize!
+  # updateItemSize(id: ID!, input: UpdateItemSizeInput!): ItemSize!
+  # removeItemSize(id: ID!): ItemSize!
+}
+
+type Subscription {
+  itemSizeCreated: Item!
+}
+
+input CreateItemSizeInput {
+	item_id: ID!
+	price: Float!
+	size: String!
+	photo: String
 }

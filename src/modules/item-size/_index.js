@@ -4,6 +4,9 @@ import { pubsub } from '../../graphql/pubsub.js';
 import { isLoggedIn } from './../../graphql/is-loggedin.js';
 import { ForbiddedError } from '../../shared/errors/index.js';
 import { listItemSizes } from './list-item-size.js';
+import { showItemSize } from './show-item-size.js';
+import { addItemSize } from './add-item-size.js';
+import { showItem } from './../items/show-item.js';
 
 const typeDefs = readFileSync(
   join(process.cwd(), 'src', 'modules', 'item-size', '_schema.gql'),
@@ -17,49 +20,54 @@ const resolvers = {
     },
 
     item_size: (_, args) => {
-      return showItem({ id: args.id });
+      return showItemSize({ id: args.id });
     }
   },
-  // Mutation: {
-  //   createItem: async (_, args, contextValue) => {
-  //     isLoggedIn(contextValue);
+  Mutation: {
+    createItemSize: async (_, args, contextValue) => {
+      isLoggedIn(contextValue);
 
-  //     if (contextValue.user.role !== "user") {
-  //       throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
-  //     };
+      if (contextValue.user.role !== "user") {
+        throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
+      };
 
-  //     const result = await addItem(args.input);
+      const result = await addItemSize(args.input);
 
-  //     pubsub.publish('ITEM_CREATED', { itemCreated: result });
+      pubsub.publish('ITEM_SIZE_CREATED', { itemSizeCreated: result });
 
-  //     return result;
-  //   },
+      return result;
+    },
 
-  //   updateItem: (_, args, contextValue) => {
-  //     isLoggedIn(contextValue);
+    // updateItemSize: (_, args, contextValue) => {
+    //   isLoggedIn(contextValue);
 
-  //     if (contextValue.user.role !== "user") {
-  //       throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
-  //     };
+    //   if (contextValue.user.role !== "user") {
+    //     throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
+    //   };
 
-  //     return editItem({ id: args.id, ...args.input });
-  //   },
+    //   return editItem({ id: args.id, ...args.input });
+    // },
 
-  //   removeItem: (_, args, contextValue) => {
-  //     isLoggedIn(contextValue);
+    // removeItemSize: (_, args, contextValue) => {
+    //   isLoggedIn(contextValue);
 
-  //     if (contextValue.user.role !== "user") {
-  //       throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
-  //     };
+    //   if (contextValue.user.role !== "user") {
+    //     throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
+    //   };
 
-  //     return removeItem({ id: args.id });
-  //   },
-  // },
-  // Subscription: {
-  //   itemCreated: {
-  //     subscribe: () => pubsub.asyncIterator(['ITEM_CREATED']),
-  //   },
-  // },
+    //   return removeItem({ id: args.id });
+    // },
+  },
+  Subscription: {
+    itemSizeCreated: {
+      subscribe: () => pubsub.asyncIterator(['ITEM_SIZE_CREATED']),
+    },
+  },
+  ItemSize: {
+    item: (parent) => {
+      return showItem({ id: parent.item_id });
+    }
+  }
 };
 
 export default { typeDefs, resolvers };
