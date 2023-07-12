@@ -5,6 +5,7 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { schema } from './schema.js';
 import { expressMiddleware } from '@apollo/server/express4';
 import jwt from 'jsonwebtoken';
+import config from '../shared/config/index.js';
 
 export function buildGraphQLServer(httpServer) {
   const wsServer = new WebSocketServer({

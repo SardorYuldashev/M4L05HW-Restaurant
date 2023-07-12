@@ -19,15 +19,15 @@ const resolvers = {
   Query: {
     users: (_, __, contextValue) => {
       isLoggedIn(contextValue);
+
       return listUsers();
     },
-    user: (_, args) => {
-      return showUser({ id: args.id });
-    },
-    me: (_, __, contextValue) => {
+
+    user: (_, args, contextValue) => {
       isLoggedIn(contextValue);
-      return showUser({ id: contextValue.user.id });
-    },
+
+      return showUser({ id: args.id });
+    }
   },
   Mutation: {
     createUser: async (_, args) => {
@@ -37,17 +37,27 @@ const resolvers = {
 
       return result;
     },
+
     updateUser: (_, args, contextValue) => {
       isLoggedIn(contextValue);
+
       if (contextValue.user.id !== args.id) {
-        throw new ForbiddedError('Forbidden');
-      }
+        throw new ForbiddedError("Faqat o'z profilingizni tahrirlay olasiz");
+      };
 
       return editUser({ id: args.id, ...args.input });
     },
-    removeUser: (_, args) => {
+
+    removeUser: (_, args, contextValue) => {
+      isLoggedIn(contextValue);
+
+      if (contextValue.user.id !== +args.id) {
+        throw new ForbiddedError("Birovni profilini o'chira olmaysiz");
+      };
+
       return removeUser({ id: args.id });
     },
+
     login: (_, args) => {
       return loginUser(args.input);
     },

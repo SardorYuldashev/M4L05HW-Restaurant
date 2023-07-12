@@ -5,7 +5,7 @@ export const editUser = async ({ id, ...changes }) => {
   const user = await db('users').where({ id }).first();
 
   if (!user) {
-    throw new NotFoundError('User not found');
+    throw new NotFoundError('Foydalanuvchi topilmadi');
   }
 
   let passwordChange = {};

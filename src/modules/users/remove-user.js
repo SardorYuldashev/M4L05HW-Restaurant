@@ -4,8 +4,13 @@ export const removeUser = async ({ id }) => {
   const user = await db('users').where({ id }).first();
 
   if (!user) {
-    throw new NotFoundError('User not found');
-  }
+    throw new NotFoundError('Foydalanuvchi topilmadi');
+  };
 
-  return (await db('users').where({ id }).delete().returning('*'))[0];
+  const deleted = await db('users')
+    .where({ id })
+    .update({ is_deleted: true })
+    .returning(['id', 'first_name', 'last_name', 'username']);
+
+  return deleted[0];
 };
