@@ -1,0 +1,13 @@
+type Query {
+  clients: [Client!]!
+  client(id: ID!): Client!
+}
+
+type Client {
+  id: ID!
+	phone_number: Int!
+	first_name: String
+	last_name: String
+	created_at: String
+	updated_at: String
+}
