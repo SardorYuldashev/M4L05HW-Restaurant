@@ -7,6 +7,7 @@ type Mutation {
   createClient(input: CreateClientInput!): Client!
   updateClient(id: ID!, input: UpdateClientInput!): Client!
   removeClient(id: ID!): Client!
+	loginClient(input: loginClientInput!): Login!
 }
 
 type Subscription {
@@ -22,6 +23,10 @@ type Client {
 	updated_at: String
 }
 
+type Login {
+  token: String
+}
+
 input CreateClientInput {
   first_name: String!
   last_name: String!
@@ -34,4 +39,9 @@ input UpdateClientInput {
   last_name: String
   phone_number: Float
   password: String
+}
+
+input loginClientInput {
+  phone_number: Float!
+  password: String!
 }

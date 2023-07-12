@@ -8,6 +8,7 @@ import { showClients } from './showClient.js';
 import { addClient } from './add-client.js';
 import { editClient } from './edit-client.js';
 import { removeClient } from './remove-client.js';
+import { loginClient } from './login-client.js';
 
 const typeDefs = readFileSync(
   join(process.cwd(), 'src', 'modules', 'clients', '_schema.gql'),
@@ -40,7 +41,7 @@ const resolvers = {
     updateClient: (_, args, contextValue) => {
       isLoggedIn(contextValue);
 
-      if (contextValue.user.id !== +args.id) {
+      if (contextValue.user.role !== "client" || contextValue.user.id !== +args.id) {
         throw new ForbiddedError("Faqat o'z profilingizni tahrirlay olasiz");
       };
 
@@ -50,11 +51,15 @@ const resolvers = {
     removeClient: (_, args, contextValue) => {
       isLoggedIn(contextValue);
 
-      if (contextValue.user.id !== +args.id) {
+      if (contextValue.user.role !== "client" || contextValue.user.id !== +args.id) {
         throw new ForbiddedError("Birovni profilini o'chira olmaysiz");
       };
 
       return removeClient({ id: args.id });
+    },
+
+    loginClient: (_, args) => {
+      return loginClient(args.input);
     },
   },
   Subscription: {
