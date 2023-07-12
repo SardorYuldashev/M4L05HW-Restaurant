@@ -1,5 +1,6 @@
 import bcryptjs from 'bcryptjs';
 import db from '../../db/index.js';
+import { NotFoundError } from '../../shared/errors/index.js';
 
 export const editClient = async ({ id, ...changes }) => {
   const client = await db('clients').where({ id }).first();

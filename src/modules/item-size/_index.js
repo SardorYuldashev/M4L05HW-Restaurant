@@ -7,6 +7,7 @@ import { listItemSizes } from './list-item-size.js';
 import { showItemSize } from './show-item-size.js';
 import { addItemSize } from './add-item-size.js';
 import { showItem } from './../items/show-item.js';
+import { editItemSize } from './edit-item-size.js';
 
 const typeDefs = readFileSync(
   join(process.cwd(), 'src', 'modules', 'item-size', '_schema.gql'),
@@ -38,15 +39,15 @@ const resolvers = {
       return result;
     },
 
-    // updateItemSize: (_, args, contextValue) => {
-    //   isLoggedIn(contextValue);
+    updateItemSize: (_, args, contextValue) => {
+      isLoggedIn(contextValue);
 
-    //   if (contextValue.user.role !== "user") {
-    //     throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
-    //   };
+      if (contextValue.user.role !== "user") {
+        throw new ForbiddedError("Sizda bu yo'lga kirishga ruxsat yo'q");
+      };
 
-    //   return editItem({ id: args.id, ...args.input });
-    // },
+      return editItemSize({ id: args.id, ...args.input });
+    },
 
     // removeItemSize: (_, args, contextValue) => {
     //   isLoggedIn(contextValue);
