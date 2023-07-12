@@ -16,14 +16,11 @@ const typeDefs = readFileSync(
 
 const resolvers = {
   Query: {
-    items: (_, __, contextValue) => {
-      isLoggedIn(contextValue);
-
+    items: () => {
       return listItems();
     },
 
-    item: (_, args, contextValue) => {
-      isLoggedIn(contextValue);
+    item: (_, args) => {
 
       return showItem({ id: args.id });
     }
