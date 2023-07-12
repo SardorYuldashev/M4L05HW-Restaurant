@@ -5,6 +5,9 @@ import { ForbiddedError } from '../../shared/errors/index.js';
 import { isLoggedIn } from '../../graphql/is-loggedin.js';
 import { listClients } from './list-clients.js';
 import { showClients } from './showClient.js';
+import { addClient } from './add-client.js';
+import { editClient } from './edit-client.js';
+import { removeClient } from './remove-client.js';
 
 const typeDefs = readFileSync(
   join(process.cwd(), 'src', 'modules', 'clients', '_schema.gql'),
@@ -24,7 +27,41 @@ const resolvers = {
 
       return showClients({ id: args.id });
     }
-  }
+  },
+  Mutation: {
+    createClient: async (_, args) => {
+      const result = await addClient(args.input);
+
+      pubsub.publish('CLIENT_CREATED', { clientCreated: result });
+
+      return result;
+    },
+
+    updateClient: (_, args, contextValue) => {
+      isLoggedIn(contextValue);
+
+      if (contextValue.user.id !== +args.id) {
+        throw new ForbiddedError("Faqat o'z profilingizni tahrirlay olasiz");
+      };
+
+      return editClient({ id: args.id, ...args.input });
+    },
+
+    removeClient: (_, args, contextValue) => {
+      isLoggedIn(contextValue);
+
+      if (contextValue.user.id !== +args.id) {
+        throw new ForbiddedError("Birovni profilini o'chira olmaysiz");
+      };
+
+      return removeClient({ id: args.id });
+    },
+  },
+  Subscription: {
+    clientCreated: {
+      subscribe: () => pubsub.asyncIterator(['CLIENT_CREATED']),
+    },
+  },
 };
 
 export default { typeDefs, resolvers };
