@@ -1,0 +1,28 @@
+type Item {
+	id: ID!
+	type: String
+	# sizes: [ItemSize!]!
+}
+
+type Query {
+  items: [Item!]!
+  item(id: ID!): Item!
+}
+
+type Mutation {
+  createItem(input: CreateItemInput!): Item!
+  updateItem(id: ID!, input: UpdateItemInput!): Item!
+  removeItem(id: ID!): Item!
+}
+
+type Subscription {
+  itemCreated: Item!
+}
+
+input CreateItemInput {
+	type: String!
+}
+
+input UpdateItemInput {
+	type: String
+}
