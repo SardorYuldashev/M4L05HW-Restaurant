@@ -2,13 +2,13 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { pubsub } from '../../graphql/pubsub.js';
 import { ForbiddedError } from '../../shared/errors/index.js';
+import { isLoggedIn } from '../../graphql/is-loggedin.js';
 import { addUser } from './add-user.js';
 import { listUsers } from './list-users.js';
 import { showUser } from './show-user.js';
 import { editUser } from './edit-user.js';
 import { removeUser } from './remove-user.js';
 import { loginUser } from './login-user.js';
-import { isLoggedIn } from '../../graphql/is-loggedin.js';
 
 const typeDefs = readFileSync(
   join(process.cwd(), 'src', 'modules', 'users', '_schema.gql'),
