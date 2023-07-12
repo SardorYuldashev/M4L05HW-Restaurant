@@ -3,12 +3,12 @@
  * @returns { Promise<void> }
  */
 export const up = function (knex) {
-  return knex.schema.createTable('item_sizes', (table) => {
+  return knex.schema.createTable('users', (table) => {
     table.increments('id');
-    table.integer('item_id').references('id').inTable('items').onDelete('CASCADE');
-    table.decimal('price', 12, 2).notNullable();
-    table.string('size').notNullable();
-    table.string('photo');
+    table.string('first_name').notNullable();
+    table.string('last_name').notNullable();
+    table.string('username', 30).notNullable().unique();
+    table.string('password', 350).notNullable();
     table.timestamps(true, true);
     table.boolean('is_deleted').defaultTo(false);
   });
@@ -19,5 +19,5 @@ export const up = function (knex) {
  * @returns { Promise<void> }
  */
 export const down = function (knex) {
-  return knex.schema.dropTable('item_sizes');
+  return knex.schema.dropTable('users');
 };
